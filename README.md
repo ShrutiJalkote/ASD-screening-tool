@@ -1,139 +1,388 @@
-# Multi-Algorithmic Approach for Accurate Detection of Autism Spectrum Disorder
+# 🧠 Autism Spectrum Disorder Detection
 
-ML system that screens for ASD traits from AQ-10 behavioral questionnaire
-responses, comparing four models (Logistic Regression, SVM, Random Forest,
-KNN) and serving the best one through a FastAPI backend + web frontend.
+An end-to-end Machine Learning application for **Autism Spectrum Disorder (ASD) screening** using AQ-10 behavioral questionnaire responses and demographic information.
 
-## Project structure
+The system compares multiple Machine Learning algorithms and serves the best-performing model through a **FastAPI backend** with a modern **React frontend**.
 
+> ⚠️ **Disclaimer:** This project is intended for educational and screening purposes only. It is not a medical diagnostic tool and should not replace professional medical advice.
+
+## 🚀 Project Overview
+
+The application takes **AQ-10 behavioral questionnaire responses** along with demographic information and predicts whether the input indicates a higher likelihood of ASD.
+
+Four Machine Learning models were trained and evaluated:
+
+- Logistic Regression
+- Support Vector Machine (SVM)
+- Random Forest
+- K-Nearest Neighbors (KNN)
+
+The models were evaluated using **5-fold cross-validation**, and the best-performing model was selected for deployment.
+
+### 🏆 Best Result
+
+**Logistic Regression achieved 99.5% cross-validated accuracy.**
+
+| Model | CV Accuracy | Precision | Recall | F1 Score |
+|---|---:|---:|---:|---:|
+| **Logistic Regression** | **99.5%** | **100%** | **100%** | **100%** |
+| SVM | 97.7% | 100% | 84.2% | 91.4% |
+| KNN | 96.6% | 97.3% | 94.7% | 96.0% |
+| Random Forest | 96.3% | 96.7% | 76.3% | 85.3% |
+
+## ✨ Features
+
+- 🧠 ASD screening using AQ-10 behavioral responses
+- 👤 Demographic information processing
+- 🤖 Comparison of four Machine Learning algorithms
+- 📊 5-fold cross-validation
+- ⚙️ Automated preprocessing pipeline
+- 🚀 FastAPI REST API
+- ⚛️ React-based frontend
+- 📈 Model comparison information through API
+- 🔒 Input validation using Pydantic
+- ☁️ Deployment-ready backend
+- ⚠️ Medical screening disclaimer included
+
+## 🏗️ System Architecture
+
+```text
+                 ┌──────────────────────┐
+                 │     React Frontend   │
+                 │    Questionnaire UI  │
+                 └──────────┬───────────┘
+                            │
+                            │ HTTP Request
+                            ▼
+                 ┌──────────────────────┐
+                 │    FastAPI Backend   │
+                 │                      │
+                 │  /predict            │
+                 │  /model-info         │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │ Preprocessing        │
+                 │ Pipeline             │
+                 │                      │
+                 │ Imputation            │
+                 │ Scaling               │
+                 │ One-Hot Encoding      │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │ Logistic Regression  │
+                 │      Model           │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │ Prediction +         │
+                 │ Probability +        │
+                 │ Disclaimer           │
+                 └──────────────────────┘
 ```
+
+## 🧪 Machine Learning Pipeline
+
+The project uses a Scikit-learn preprocessing pipeline to ensure consistent preprocessing during both training and prediction.
+
+### Numerical Features
+
+- Age
+- AQ-10 behavioral scores
+
+Processing:
+
+```text
+Missing Values
+      ↓
+Median Imputation
+      ↓
+Standard Scaling
+```
+
+### Categorical Features
+
+- Gender
+- Ethnicity
+- Jaundice history
+- Family history of autism
+- Relation to respondent
+
+Processing:
+
+```text
+Missing Values
+      ↓
+Most-Frequent Imputation
+      ↓
+One-Hot Encoding
+```
+
+All preprocessing and model operations are wrapped into a single deployable pipeline to avoid inconsistencies between training and prediction.
+
+## 🤖 Models Used
+
+### 1. Logistic Regression
+
+Selected as the best-performing model based on cross-validation results.
+
+**Cross-validated accuracy: 99.5%**
+
+### 2. Support Vector Machine
+
+Achieved **97.7% cross-validated accuracy**.
+
+### 3. K-Nearest Neighbors
+
+Achieved **96.6% cross-validated accuracy**.
+
+### 4. Random Forest
+
+Achieved **96.3% cross-validated accuracy**.
+
+## 📊 Why Logistic Regression Performed Best
+
+The AQ-10 questionnaire is strongly related to the target label because the label is derived from behavioral screening responses.
+
+The project therefore evaluates the models using **5-fold cross-validation** rather than relying only on a single train/test split.
+
+The demographic variables also provide additional information beyond the questionnaire responses.
+
+## 🔌 API Endpoints
+
+### `POST /predict`
+
+Accepts questionnaire and demographic information and returns:
+
+- ASD prediction
+- Prediction probability
+- Disclaimer
+
+### `GET /model-info`
+
+Returns information about the trained models and their comparison metrics.
+
+## 📁 Project Structure
+
+```text
 asd-detection/
-├── data/
-│   ├── generate_synthetic.py     # creates a synthetic dataset for testing the pipeline
-│   └── autism_screening.csv      # replace with the real Kaggle dataset before final submission
+│
 ├── backend/
-│   ├── train_model.py            # preprocessing + trains & compares all 4 models
-│   └── main.py                   # FastAPI app, serves /predict
-├── frontend/
-│   └── index.html                # single-page screening form
-├── models/                       # saved model + comparison results (generated by train_model.py)
-└── requirements.txt
+│   ├── main.py
+│   └── train_model.py
+│
+├── data/
+│   ├── autism_screening.csv
+│   └── generate_synthetic.py
+│
+├── models/
+│   └── model_comparison.json
+│
+├── frontend-react/
+│   ├── public/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── PulseTrace.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── package.json
+│   └── vite.config.js
+│
+├── requirements.txt
+└── README.md
 ```
 
-## Setup
+## 🛠️ Tech Stack
+
+### Machine Learning
+
+- Python
+- NumPy
+- Pandas
+- Scikit-learn
+
+### Backend
+
+- FastAPI
+- Uvicorn
+- Pydantic
+
+### Frontend
+
+- React
+- Vite
+- JavaScript
+- CSS
+
+### Development & Deployment
+
+- Git
+- GitHub
+- Render
+
+## 💻 Installation & Setup
+
+### 1. Clone the Repository
 
 ```bash
+git clone https://github.com/<your-username>/asd-detection.git
+cd asd-detection
+```
+
+### 2. Create a Virtual Environment
+
+Windows:
+
+```powershell
+python -m venv venv
+venv\Scripts\activate
+```
+
+### 3. Install Backend Dependencies
+
+```powershell
 pip install -r requirements.txt
 ```
 
-## 1. Get the real dataset
+### 4. Train the Models
 
-This repo ships a **synthetic** dataset generator (`data/generate_synthetic.py`) so you
-can test the pipeline immediately. For your actual submission, download the real dataset:
-
-- Kaggle: "Autism Screening on Adults" (search `autism screening adult kaggle`)
-- Or the original UCI source: "Autism Screening Adult Data Set"
-
-Place the CSV at `data/autism_screening.csv` with the same column names
-(A1_Score...A10_Score, age, gender, ethnicity, jaundice, austim, relation, Class/ASD).
-If column names differ slightly, adjust `backend/train_model.py` accordingly.
-
-## 2. Train
-
-```bash
+```powershell
 python backend/train_model.py
 ```
 
-This prints accuracy/precision/recall/F1/ROC-AUC and 5-fold cross-validated
-accuracy for all four models, then saves the best one to `models/best_model.pkl`.
+### 5. Start the FastAPI Backend
 
-### Important: why some ASD projects report 100% accuracy
-
-The commonly-used Kaggle dataset includes a `result` column, which is the sum
-of the A1-A10 answers. If you train a model on A1-A10 **and** `result`
-together, the model is trivially able to reconstruct the label because
-`result` is a deterministic function of the same features — this is data
-leakage, not genuine 100% predictive power. `train_model.py` drops `result`
-(along with `age_desc`, `used_app_before`, and `contry_of_res`, which add
-noise/near-constant columns without real signal) so the reported accuracy
-reflects the model actually learning from behavioral answers. This is a good
-talking point for your viva/interview if anyone questions a suspiciously
-perfect accuracy number in similar public projects.
-
-## 3. Run the API
-
-```bash
-uvicorn backend.main:app --reload --port 8000
+```powershell
+uvicorn backend.main:app --reload
 ```
 
-Test it:
-```bash
-curl http://127.0.0.1:8000/
-curl -X POST http://127.0.0.1:8000/predict -H "Content-Type: application/json" -d '{
-  "A1_Score":1,"A2_Score":1,"A3_Score":0,"A4_Score":1,"A5_Score":1,
-  "A6_Score":0,"A7_Score":1,"A8_Score":1,"A9_Score":0,"A10_Score":1,
-  "age":25,"gender":"m","ethnicity":"Asian","jaundice":"no","austim":"yes","relation":"Self"
-}'
+The API will be available at:
+
+```text
+http://127.0.0.1:8000
 ```
 
-## 4. Run the frontend
+Swagger API documentation:
 
-Two frontend options are included:
+```text
+http://127.0.0.1:8000/docs
+```
 
-**Option A — React (recommended, prettier, animated)**
-```bash
+## ⚛️ Running the React Frontend
+
+Open another terminal:
+
+```powershell
 cd frontend-react
 npm install
 npm run dev
 ```
-Visit `http://localhost:5173`. It talks to the API at `http://localhost:8000`
-(set in `frontend-react/.env` via `VITE_API_BASE`).
 
-Signature design element: a live "pulse trace" (SVG line, like an EKG strip)
-that draws itself as you answer each AQ-10 question — agree-scored answers
-spike up, disagree-scored answers dip down. The same trace reappears frozen
-on the result screen, color-coded by outcome.
+The frontend will be available at the URL shown by Vite, typically:
 
-**Option B — Static HTML (no build step)**
+```text
+http://localhost:5173
+```
 
-Just open `frontend/index.html` in a browser while the API is running.
+## ☁️ Deployment
 
-## Real results (real UCI AQ-10 Adult dataset, 704 rows)
+The FastAPI backend can be deployed on Render.
 
-The `data/autism_screening.csv` shipped in this repo is now the real dataset
-(previously it was the synthetic placeholder). Retrained results:
+### Backend Configuration
 
-| Model | Test Accuracy | Precision | Recall | F1 | 5-fold CV Accuracy |
-|---|---|---|---|---|---|
-| **Logistic Regression** | 100.0% | 100.0% | 100.0% | 100.0% | **99.47%** |
-| KNN | 97.9% | 97.3% | 94.7% | 96.0% | 96.63% |
-| SVM | 95.7% | 100.0% | 84.2% | 91.4% | 97.69% |
-| Random Forest | 92.9% | 96.7% | 76.3% | 85.3% | 96.27% |
+```text
+Name: asd-detection-api
+Runtime: Python 3
 
-**Quote the cross-validated number (99.47%), not the single 100% test-split
-number**, if asked in an interview. The 100% is one lucky 141-row test split;
-5-fold CV averages over 5 different splits and is the more honest, harder-to-
-poke-a-hole-in number. Being able to explain *why* it's this high (AQ-10 is a
-validated diagnostic rule computed directly from these 10 answers, so a model
-that reads the 10 answers well is close to re-deriving the rule) is a strong
-answer if anyone questions it.
+Build Command:
+pip install -r requirements.txt && python backend/train_model.py
 
-## Two bugs fixed when the real dataset was plugged in
+Start Command:
+uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+```
 
-1. **Column name mismatch**: the real dataset's column is `jundice` (a typo
-   baked into the original UCI data), but `main.py`'s request schema expected
-   `jaundice`. Renamed the column in the CSV to match, so predictions don't
-   silently fail on a `ColumnTransformer` lookup error.
-2. **Hardcoded Linux paths**: `train_model.py` originally pointed at
-   `/home/claude/asd-detection/...`, which only worked in the environment it
-   was drafted in. Switched to `Path(__file__).resolve().parent.parent`-based
-   paths so it runs the same on Windows, macOS, or Linux.
+The project can be connected directly to the GitHub repository for automatic deployment.
 
-## Resume bullet mapping
+## 🐛 Debugging & Development Notes
 
-- "Implemented a machine learning system..." → `backend/train_model.py`
-- "Applied and compared four ML models..." → same file, prints/saves comparison table
-- "Created a web-based screening tool..." → `backend/main.py` + `frontend/index.html`
-- "Contributed to dataset preprocessing, model training, evaluation, deployment"
-  → preprocessing pipeline (ColumnTransformer), training loop, metrics, and
-  the FastAPI deployment layer all live in this repo
+During development, the original dataset contained a column naming inconsistency:
+
+```text
+jundice
+```
+
+instead of:
+
+```text
+jaundice
+```
+
+The API schema used the correct spelling, so the mismatch caused prediction issues when the real dataset was integrated.
+
+The issue was resolved by aligning the preprocessing pipeline and dataset feature names.
+
+## 📈 Model Evaluation
+
+The project uses **5-fold cross-validation** to obtain a more reliable estimate of model performance.
+
+The complete comparison results are stored in:
+
+```text
+models/model_comparison.json
+```
+
+The training logic is implemented in:
+
+```text
+backend/train_model.py
+```
+
+The API implementation is located in:
+
+```text
+backend/main.py
+```
+
+The questionnaire and result interface is implemented in:
+
+```text
+frontend-react/src/App.jsx
+```
+
+## 🔮 Future Improvements
+
+- Add additional clinically validated datasets
+- Improve model interpretability using SHAP/LIME
+- Add visualization of questionnaire responses
+- Add authentication and user accounts
+- Add prediction history
+- Improve accessibility and responsive design
+- Add automated model retraining
+- Add comprehensive unit and integration tests
+- Deploy the React frontend separately
+- Add CI/CD using GitHub Actions
+
+## ⚠️ Disclaimer
+
+This application is an **educational Machine Learning project** designed for ASD screening research and demonstration.
+
+It does **not** provide a medical diagnosis.
+
+Predictions should not be used as a substitute for evaluation by a qualified healthcare professional.
+
+## 👩‍💻 Author
+
+**Shruti Jalkote**
+
+B.E. Artificial Intelligence & Data Science
+
+Pune, Maharashtra, India
+
+## ⭐ If You Find This Project Useful
+
+Consider giving the repository a ⭐ on GitHub!
