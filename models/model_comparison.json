@@ -1,0 +1,42 @@
+[
+  {
+    "model":"Logistic Regression",
+    "test_accuracy":1.0,
+    "precision":1.0,
+    "recall":1.0,
+    "f1":1.0,
+    "roc_auc":1.0,
+    "cv_mean_accuracy":0.9947,
+    "cv_std":0.0071
+  },
+  {
+    "model":"SVM",
+    "test_accuracy":0.9574,
+    "precision":1.0,
+    "recall":0.8421,
+    "f1":0.9143,
+    "roc_auc":0.9982,
+    "cv_mean_accuracy":0.9769,
+    "cv_std":0.0132
+  },
+  {
+    "model":"KNN",
+    "test_accuracy":0.9787,
+    "precision":0.973,
+    "recall":0.9474,
+    "f1":0.96,
+    "roc_auc":0.9932,
+    "cv_mean_accuracy":0.9663,
+    "cv_std":0.013
+  },
+  {
+    "model":"Random Forest",
+    "test_accuracy":0.9291,
+    "precision":0.9667,
+    "recall":0.7632,
+    "f1":0.8529,
+    "roc_auc":0.99,
+    "cv_mean_accuracy":0.9627,
+    "cv_std":0.0142
+  }
+]

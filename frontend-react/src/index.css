@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --paper: #EEF0F7;
+  --paper-raised: #FFFFFF;
+  --ink: #14152B;
+  --ink-soft: #5B5D7A;
+  --line: #D7DBEA;
+
+  --indigo: #5B4CFF;
+  --indigo-deep: #3B2FCC;
+  --coral: #FF5A36;
+  --coral-soft: #FFE0D6;
+  --mint: #0F9E8E;
+  --mint-soft: #D3F3EE;
+
+  --font-display: 'Instrument Serif', serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { margin: 0; padding: 0; min-height: 100vh; }
+
+body {
+  background: var(--paper);
+  background-image:
+    radial-gradient(circle at 8% 0%, rgba(91, 76, 255, 0.07), transparent 40%),
+    radial-gradient(circle at 100% 20%, rgba(255, 90, 54, 0.05), transparent 35%);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: inherit; }
+
+:focus-visible { outline: 2px solid var(--indigo); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
